@@ -116,6 +116,7 @@ module Paperclip
       instance_write(:fingerprint, @queued_for_write[:original].fingerprint) if instance_respond_to?(:fingerprint)
       updater = :"#{name}_file_name_will_change!"
       instance.send updater if instance.respond_to? updater
+      file.close if Thread.current[:paperclip_close_and_reopen_tempfiles]
     end
 
     # Returns the public URL of the attachment with a given style. This does

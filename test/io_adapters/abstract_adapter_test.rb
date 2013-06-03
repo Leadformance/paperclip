@@ -55,4 +55,26 @@ class AbstractAdapterTest < Test::Unit::TestCase
   should 'not be nil' do
     assert !TestAdapter.new.nil?
   end
+
+  context "destination closed" do
+    setup do
+      @adapter = TestAdapter.new
+      @adapter.tempfile = stub("Tempfile", :closed? => true)
+      @adapter.tempfile.stubs(:read)
+      @adapter.tempfile.stubs(:open)
+      @adapter.tempfile.stubs(:binmode)
+    end
+
+    should 'reopen destination' do
+      @adapter.tempfile.stubs(:binmode)
+      @adapter.read
+      assert_received @adapter.tempfile, :open
+    end
+
+    should 'set binmode after reopening' do
+      @adapter.tempfile.stubs(:open)
+      @adapter.read
+      assert_received @adapter.tempfile, :binmode
+    end
+  end
 end

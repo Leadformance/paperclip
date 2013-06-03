@@ -1450,4 +1450,24 @@ class AttachmentTest < Test::Unit::TestCase
     end
   end
 
+  context "within closing tempfile directive" do
+    setup do
+      @dummy = Dummy.new
+      @file = File.new(fixture_file("5k.png"), 'rb')
+      @tempfile = Paperclip::TempfileFactory.new.generate("paperclip-spec")
+      Paperclip::TempfileFactory.any_instance.stubs(:generate).returns(@tempfile)
+    end
+
+    should 'close tempfile' do
+      Paperclip.close_and_reopen_tempfiles do
+        @dummy.avatar=(@file)
+        assert @tempfile.closed?
+      end
+    end
+
+    teardown do
+      @tempfile.close unless @tempfile.closed?
+      @tempfile.unlink
+    end
+  end
 end

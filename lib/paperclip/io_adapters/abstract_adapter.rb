@@ -12,6 +12,11 @@ module Paperclip
     end
 
     def read(length = nil, buffer = nil)
+      if @tempfile.closed?
+        @tempfile.open
+        @tempfile.binmode
+      end
+
       @tempfile.read(length, buffer)
     end
 
