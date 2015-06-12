@@ -184,7 +184,6 @@ DEPENDENCIES
   bourne
   bundler
   capybara
-  cocaine (~> 0.2)
   cucumber (~> 1.2.1)
   fakeweb
   fog (>= 1.4.0, < 1.7.0)
@@ -198,3 +197,6 @@ DEPENDENCIES
   rake
   shoulda
   sqlite3
+
+BUNDLED WITH
+   1.10.3
